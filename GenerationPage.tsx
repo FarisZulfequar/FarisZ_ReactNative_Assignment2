@@ -1,8 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useState } from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NavigationList } from './App.tsx';
 
 
-export function GenerationPage() {
+type navigationProp = NativeStackScreenProps<NavigationList, 'GenerationPage'>;
+
+export function GenerationPage({navigation} : navigationProp) {
   const [number, setNumber] = useState(0);
   const [currentIteration, setCurrentIteration] = useState(0);
 
@@ -28,18 +32,16 @@ export function GenerationPage() {
     }, 80)
   }
 
-
-
   return (
     <View style={generationPageStyles.container}>
       <View style={generationPageStyles.container2}>
         <Text style={generationPageStyles.textCenter}>{number === 0 ? '...' : number}</Text>
       </View>
       <View style={generationPageStyles.bottomButtons}>
-        <TouchableOpacity style={generationPageStyles.button}>
-          <Text style={generationPageStyles.btnText} onPress={generateRandomNumber}>Generate</Text>
+        <TouchableOpacity style={generationPageStyles.button} onPress={() => generateRandomNumber()}>
+          <Text style={generationPageStyles.btnText}>Generate</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={generationPageStyles.button}>
+        <TouchableOpacity style={generationPageStyles.button} onPress={() => navigation.navigate('StatisticPage')}>
           <Text style={generationPageStyles.btnText}>View Statistics</Text>
         </TouchableOpacity>
       </View>
@@ -87,4 +89,11 @@ export const generationPageStyles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
   },
+
+  leftArrowBtn : {
+    color: 'white',
+    fontSize: 25,
+    fontFamily: 'System',
+    marginRight : 10
+  }
 });
