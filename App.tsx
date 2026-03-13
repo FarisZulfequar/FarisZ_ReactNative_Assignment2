@@ -18,7 +18,32 @@ const Stack = createNativeStackNavigator<NavigationList>();
 export function App() {
 
   return (
-    <GenerationPage/>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="GenerationPage">
+        <Stack.Screen
+          name="GenerationPage"
+          component={GenerationPage}
+          options={{
+            title: "Random Number Generator",
+            headerStyle: {
+              backgroundColor: "#7f5539"
+            },
+            headerTintColor: "white"
+          }}
+        />
+        <Stack.Screen
+          name="StatisticPage"
+          component={StatisticPage}
+          options={({}) => ({
+            title: "Statistics",
+            headerStyle: {
+              backgroundColor: "#7f5539"
+            },
+            headerTintColor: "white"
+          })}
+        />
+      </Stack.Navigator>
+      </NavigationContainer>
   );
 }
 
