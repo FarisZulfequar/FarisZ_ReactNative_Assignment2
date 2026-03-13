@@ -4,11 +4,31 @@ import { useState } from 'react';
 
 export function GenerationPage() {
   const [number, setNumber] = useState(0);
+  const [currentIteration, setCurrentIteration] = useState(0);
 
   const generateRandomNumber = () => {
     const randomNum = Math.floor(Math.random() * 9) + 1;
     setNumber(randomNum);
+
+    setTimeout(() => {
+      const randomNum = Math.floor(Math.random() * 9) + 1;
+      setNumber(randomNum);
+
+      setCurrentIteration(prevIteration => {
+        if (prevIteration < 6) {
+          // keep iterating
+          generateRandomNumber();
+          return prevIteration + 1;
+        } else {
+          // final iteration
+          return 0;
+        }
+      });
+
+    }, 80)
   }
+
+
 
   return (
     <View style={generationPageStyles.container}>
