@@ -1,7 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NavigationList } from './App.tsx';
+import { NumberContainer } from './NumberContainer.tsx';
+import { useFocusEffect } from '@react-navigation/core';
 
 
 type navigationProp = NativeStackScreenProps<NavigationList, 'GenerationPage'>;
@@ -10,27 +12,30 @@ export function GenerationPage({navigation} : navigationProp) {
   const [number, setNumber] = useState(0);
   const [currentIteration, setCurrentIteration] = useState(0);
 
+  const { increaseGeneratedNumberTimes } = useContext(NumberContainer);
+
   const generateRandomNumber = () => {
     const randomNum = Math.floor(Math.random() * 9) + 1;
     setNumber(randomNum);
 
     setTimeout(() => {
-      const randomNum = Math.floor(Math.random() * 9) + 1;
-      setNumber(randomNum);
-
-      setCurrentIteration(prevIteration => {
-        if (prevIteration < 6) {
-          // keep iterating
+      setCurrentIteration(prev => {
+        if (prev < 6) {
           generateRandomNumber();
-          return prevIteration + 1;
+          return prev + 1;
         } else {
-          // final iteration
+          increaseGeneratedNumberTimes(randomNum);
           return 0;
         }
       });
+    }, 80);
+  };
 
-    }, 80)
-  }
+  useFocusEffect(
+    useCallback(() => {
+      setNumber(0);
+    }, [])
+  );
 
   return (
     <View style={generationPageStyles.container}>
